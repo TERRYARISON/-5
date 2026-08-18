@@ -1,0 +1,381 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 21% 4%;
+    --foreground: 240 11% 95%;
+    --card: 240 21% 5%;
+    --card-foreground: 240 11% 95%;
+    --popover: 240 21% 5%;
+    --popover-foreground: 240 11% 95%;
+    --primary: 252 92% 77%;
+    --primary-foreground: 240 21% 4%;
+    --secondary: 240 14% 12%;
+    --secondary-foreground: 240 11% 95%;
+    --muted: 240 14% 12%;
+    --muted-foreground: 240 8% 65%;
+    --accent: 335 72% 80%;
+    --accent-foreground: 240 21% 4%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 14% 16%;
+    --input: 240 14% 16%;
+    --ring: 252 92% 77%;
+    --radius: 0.625rem;
+    --sidebar-background: 240 21% 5%;
+    --sidebar-foreground: 240 11% 95%;
+    --sidebar-primary: 252 92% 77%;
+    --sidebar-primary-foreground: 240 21% 4%;
+    --sidebar-accent: 240 14% 12%;
+    --sidebar-accent-foreground: 240 11% 95%;
+    --sidebar-border: 240 14% 16%;
+    --sidebar-ring: 252 92% 77%;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    @apply bg-void text-fog font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(240, 166, 192, 0.28);
+    color: #ededf5;
+  }
+
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+}
+
+@layer components {
+  /* ---------- Type utilities (design.md §3) ---------- */
+  .eyebrow {
+    @apply font-sans text-[0.72rem] font-medium uppercase;
+    letter-spacing: 0.3em;
+    line-height: 1.4;
+  }
+
+  .hero-h1 {
+    @apply font-serif font-light;
+    font-size: clamp(3.2rem, 7.5vw, 7rem);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+  }
+
+  .section-h2 {
+    @apply font-serif font-light;
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    line-height: 1.05;
+  }
+
+  .manifesto-text {
+    @apply font-serif font-light;
+    font-size: clamp(2rem, 4.2vw, 3.8rem);
+    line-height: 1.25;
+  }
+
+  .card-title {
+    @apply font-serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .body-text {
+    @apply font-sans font-light text-mist;
+    font-size: 1rem;
+    line-height: 1.75;
+    letter-spacing: 0.01em;
+  }
+
+  .section-shell {
+    @apply mx-auto w-full max-w-[1280px];
+    padding-inline: clamp(1.25rem, 5vw, 4rem);
+    padding-block: clamp(6rem, 14vh, 11rem);
+  }
+
+  /* ---------- Frosted glass card (design.md §5.4) ---------- */
+  .glass-card {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass-card {
+      background: rgba(18, 18, 30, 0.92);
+    }
+  }
+
+  .glass-card::after {
+    content: "";
+    position: absolute;
+    inset: -40% -120%;
+    background: linear-gradient(
+      105deg,
+      transparent 42%,
+      rgba(255, 255, 255, 0.12) 50%,
+      transparent 58%
+    );
+    transform: translateX(-60%) rotate(0.001deg);
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(240, 166, 192, 0.5);
+    box-shadow: 0 0 40px rgba(240, 166, 192, 0.35);
+  }
+
+  .glass-card:hover::after {
+    transform: translateX(60%) rotate(0.001deg);
+  }
+
+  /* ---------- Ken Burns living image (design.md §5.2) ---------- */
+  .kenburns-frame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .kenburns-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: kenburns 18s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .kenburns-video {
+    position: absolute;
+    inset: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  .kenburns-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at center, transparent 55%, rgba(7, 7, 13, 0.75) 100%),
+      linear-gradient(to top, #07070d 0%, transparent 28%);
+  }
+
+  /* ---------- Scroll cue (home hero) ---------- */
+  .scroll-cue-dot {
+    animation: scroll-cue 2s ease-in-out infinite;
+  }
+
+  /* ---------- Idle float for featured cards ---------- */
+  .float-slow {
+    animation: float-y 5s ease-in-out infinite;
+  }
+
+  .float-slow:hover {
+    animation-play-state: paused;
+  }
+
+  /* ---------- Standard section reveal (design.md §7) ---------- */
+  .reveal-item {
+    opacity: 0;
+    transform: translateY(40px);
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0s);
+    will-change: opacity, transform;
+  }
+
+  .is-inview .reveal-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- Nav link underline ---------- */
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 1px;
+    background: #f0a6c0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link:hover::after,
+  .nav-link.nav-active::after {
+    transform: scaleX(1);
+  }
+
+  .nav-link.nav-active {
+    color: #f0a6c0;
+  }
+
+  /* ---------- CTA glow pulse ---------- */
+  .glow-pulse {
+    animation: glow-pulse 2.4s ease-in-out infinite;
+  }
+
+  .glow-pulse:hover {
+    animation-play-state: paused;
+  }
+
+  /* ---------- Hero load animations ---------- */
+  .anim-fade {
+    animation: fade-in 0.8s ease-out both;
+  }
+
+  .anim-rise {
+    animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .anim-pop {
+    animation: pop-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* ---------- Reveal variants ---------- */
+  .reveal-item-x {
+    opacity: 0;
+    transform: translateX(30px);
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+
+  .is-inview .reveal-item-x {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .clip-reveal {
+    clip-path: inset(12%);
+    transition: clip-path 1s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+
+  .is-inview .clip-reveal {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) rotate(2deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.16) translate(-1.5%, -2%);
+  }
+}
+
+@keyframes scroll-cue {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(-6px);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 16px rgba(167, 139, 250, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 36px rgba(167, 139, 250, 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kenburns-img,
+  .float-slow,
+  .scroll-cue-dot,
+  .glow-pulse,
+  .anim-fade,
+  .anim-rise,
+  .anim-pop {
+    animation: none;
+  }
+
+  .reveal-item,
+  .reveal-item-x {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .clip-reveal {
+    clip-path: inset(0);
+    transition: none;
+  }
+}

@@ -90,3 +90,58 @@ export default function Navbar() {
             </span></button>
         </div>
       </header>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 z-40 flex flex-col justify-between bg-[rgba(7,7,13,0.82)] px-8 pb-12 pt-32 backdrop-blur-[24px] md:hidden"
+          >
+            <nav className="flex flex-col gap-7" aria-label="Mobile">
+              {[{ to: '/', label: 'Home' }, ...LINKS].map((link, i) => (
+                <motion.div
+                  key={link.to}
+                  initial={{ opacity: 0, y: 32 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.07 * i + 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <NavLink
+                    to={link.to}
+                    onClick={() => setOpen(false)}
+                    className={({ isActive }) =>
+                      `font-serif text-[2.6rem] font-light leading-none ${isActive ? 'italic text-sakura' : 'text-fog'}`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                </motion.div>
+              ))}
+            </nav>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="flex items-center gap-4"
+            >
+              {SOCIALS.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={s.label}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass text-mist transition-colors hover:text-neon"
+                >
+                  <s.icon size={16} strokeWidth={1.5} />
+                </a>
+              ))}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}

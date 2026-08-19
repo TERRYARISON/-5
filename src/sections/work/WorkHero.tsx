@@ -96,11 +96,25 @@ export default function WorkHero() {
 
       <div className="kenburns-frame">
         <img
-          src="/portrait-recline.jpg"
-          alt="Zheng Chao reclining beneath the sakura trees"
+          src="/work-concept.jpg"
+          alt="Biotech sakura concept film still"
           className="work-hero-kb-img h-full w-full object-cover will-change-transform"
-          style={{ objectPosition: '75% 20%' }}
+          style={{ objectPosition: '50% 30%' }}
           draggable={false}
+        />
+        <video
+          src="/work-concept.mp4"
+          poster="/work-concept.jpg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: '50% 30%' }}
+          onError={(e) => {
+            (e.currentTarget as HTMLVideoElement).style.display = 'none';
+          }}
         />
         <div className="kenburns-vignette" />
       </div>

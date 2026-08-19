@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import type { CSSProperties } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -19,6 +19,16 @@ const FEATURED = ARTICLES[0];
 export default function FeaturedEssay({ onRead }: { onRead: () => void }) {
   const rootRef = useRef<HTMLElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    const tryPlay = () => v.play().catch(() => {});
+    tryPlay();
+    document.addEventListener('visibilitychange', tryPlay);
+    return () => document.removeEventListener('visibilitychange', tryPlay);
+  }, []);
 
   useGSAP(
     () => {
@@ -48,13 +58,27 @@ export default function FeaturedEssay({ onRead }: { onRead: () => void }) {
       <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-start md:gap-10">
         {/* Left — sticky image (span 6) */}
         <Reveal className="md:sticky md:top-[104px] md:col-span-6" threshold={0.2}>
-          <div className="group clip-reveal overflow-hidden rounded-2xl">
+          <div className="group clip-reveal relative overflow-hidden rounded-2xl">
             <img
               ref={imgRef}
-              src={FEATURED.image ?? undefined}
-              alt={FEATURED.imageAlt}
+              src="/journal-concept.jpg"
+              alt="Where nature and technology unite — concept film still"
               className="aspect-[4/5] w-full scale-[1.08] object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.13]"
               draggable={false}
+            />
+            <video
+              ref={videoRef}
+              src="/journal-concept.mp4"
+              poster="/journal-concept.jpg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              className="absolute inset-0 h-full w-full object-cover"
+              onError={(e) => {
+                (e.currentTarget as HTMLVideoElement).style.display = 'none';
+              }}
             />
           </div>
         </Reveal>

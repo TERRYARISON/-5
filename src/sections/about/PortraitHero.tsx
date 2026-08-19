@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -28,6 +28,17 @@ export default function PortraitHero() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Keep the ambient clip playing even when the browser defers autoplay.
+    const v = videoRef.current;
+    if (!v) return;
+    const tryPlay = () => v.play().catch(() => {});
+    tryPlay();
+    document.addEventListener('visibilitychange', tryPlay);
+    return () => document.removeEventListener('visibilitychange', tryPlay);
+  }, []);
 
   useGSAP(
     () => {
@@ -111,10 +122,24 @@ export default function PortraitHero() {
             >
               <img
                 ref={imgRef}
-                src="/portrait-profile.jpg"
-                alt="Zheng Chao — side-profile portrait with neon constellation circuit lines"
+                src="/about-live.jpg"
+                alt="Zheng Chao — black-gold kintsugi portrait with sakura"
                 className="h-full w-full object-cover will-change-transform"
                 draggable={false}
+              />
+              <video
+                ref={videoRef}
+                src="/about-live.mp4"
+                poster="/about-live.jpg"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="absolute inset-0 h-full w-full object-cover"
+                onError={(e) => {
+                  (e.currentTarget as HTMLVideoElement).style.display = 'none';
+                }}
               />
             </div>
           </div>

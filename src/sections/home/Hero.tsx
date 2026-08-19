@@ -46,7 +46,7 @@ export default function Hero() {
 
   return (
     <section ref={rootRef} className="relative min-h-[100dvh] overflow-hidden">
-      <KenBurns src="/portrait-hero.jpg" video="/hero-loop.mp4" alt="Zheng Chao — cyberpunk sakura portrait" position="65% 30%" />
+      <KenBurns src="/hero-live.jpg" video="/hero-live.mp4" alt="Zheng Chao — cyberpunk sakura portrait" position="65% 30%" />
 
       {/* Left legibility scrim */}
       <div

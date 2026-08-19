@@ -110,16 +110,16 @@ export default function CameraJourney() {
         {/* Frame A — reclining portrait (ambient motion video over the still) */}
         <div ref={frameARef} className="absolute inset-0 will-change-transform">
           <img
-            src="/portrait-recline.jpg"
-            alt="Zheng Chao reclining beneath the sakura trees"
+            src="/journey-live.jpg"
+            alt="Zheng Chao from behind, neon wings beneath the sakura trees"
             className="h-full w-full object-cover"
             style={{ objectPosition: '50% 30%' }}
             draggable={false}
           />
           <video
             ref={frameAVideoRef}
-            src="/recline-loop.mp4"
-            poster="/portrait-recline.jpg"
+            src="/journey-live.mp4"
+            poster="/journey-live.jpg"
             autoPlay
             muted
             loop

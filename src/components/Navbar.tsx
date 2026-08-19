@@ -77,69 +77,16 @@ export default function Navbar() {
             aria-label={open ? 'Close menu' : 'Open menu'}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="relative flex h-10 w-10 flex-col items-center justify-center gap-[7px] md:hidden"
+            className="relative flex h-10 items-center justify-center gap-2.5 rounded-full border border-glass-border/70 bg-void/40 px-3.5 backdrop-blur-md md:hidden"
           >
+            <span className="eyebrow text-[0.6rem] text-fog">{open ? 'Close' : 'Menu'}</span>
+            <span className="flex flex-col items-center gap-[5px]">
             <span
-              className={`block h-px w-6 bg-fog transition-all duration-300 ${open ? 'translate-y-[4px] rotate-45' : ''}`}
+              className={`block h-px w-4 bg-fog transition-all duration-300 ${open ? 'translate-y-[3px] rotate-45' : ''}`}
             />
             <span
-              className={`block h-px w-6 bg-fog transition-all duration-300 ${open ? '-translate-y-[4px] -rotate-45' : ''}`}
+              className={`block h-px w-4 bg-fog transition-all duration-300 ${open ? '-translate-y-[3px] -rotate-45' : ''}`}
             />
-          </button>
+            </span></button>
         </div>
       </header>
-
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-40 flex flex-col justify-between bg-[rgba(7,7,13,0.82)] px-8 pb-12 pt-32 backdrop-blur-[24px] md:hidden"
-          >
-            <nav className="flex flex-col gap-7" aria-label="Mobile">
-              {[{ to: '/', label: 'Home' }, ...LINKS].map((link, i) => (
-                <motion.div
-                  key={link.to}
-                  initial={{ opacity: 0, y: 32 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.07 * i + 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <NavLink
-                    to={link.to}
-                    onClick={() => setOpen(false)}
-                    className={({ isActive }) =>
-                      `font-serif text-[2.6rem] font-light leading-none ${isActive ? 'italic text-sakura' : 'text-fog'}`
-                    }
-                  >
-                    {link.label}
-                  </NavLink>
-                </motion.div>
-              ))}
-            </nav>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="flex items-center gap-4"
-            >
-              {SOCIALS.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={s.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-glass-border bg-glass text-mist transition-colors hover:text-neon"
-                >
-                  <s.icon size={16} strokeWidth={1.5} />
-                </a>
-              ))}
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
-}

@@ -5,6 +5,7 @@ import { ArrowRight, ChevronDown, Loader2 } from 'lucide-react';
 import GlassCard from '@/components/GlassCard';
 import Reveal from '@/components/Reveal';
 import StarMark from '@/components/StarMark';
+import { SITE } from '@/content/site';
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
 const SUBJECTS = ['PROJECT', 'COLLABORATION', 'COMMISSION', 'OTHER'] as const;
@@ -34,16 +35,28 @@ export default function ContactForm() {
     return next;
   };
 
+  /**
+   * PRD F-005：表单真实化。没有后端收件服务，就不假装提交成功——
+   * 校验通过后组装 mailto:，唤起访客自己的邮件客户端，信由他亲手发出。
+   */
   const submit = (e: FormEvent) => {
     e.preventDefault();
     const next = validate();
     setErrors(next);
     if (Object.keys(next).length > 0) return;
     setSending(true);
+    const body = [
+      `称呼：${name.trim()}`,
+      `回信邮箱：${email.trim()}`,
+      '',
+      message.trim(),
+    ].join('\n');
+    const href = `mailto:${SITE.email}?subject=${encodeURIComponent(`[网站来信 · ${subject}] ${name.trim()}`)}&body=${encodeURIComponent(body)}`;
     window.setTimeout(() => {
+      window.location.href = href;
       setSending(false);
       setSent(true);
-    }, 1100);
+    }, 400);
   };
 
   const reset = () => {
@@ -78,14 +91,17 @@ export default function ContactForm() {
               >
                 <StarMark size={40} />
                 <p className="font-serif text-[2rem] font-light italic leading-snug text-sakura">
-                  Signal received. I’ll reply within two nights.
+                  已为你打开邮件应用，点发送我就收得到。
+                </p>
+                <p className="max-w-[36ch] font-sans text-[0.85rem] font-light leading-relaxed text-ghost">
+                  如果没有自动打开，也可以直接写信到 {SITE.email}
                 </p>
                 <button
                   type="button"
                   onClick={reset}
                   className="eyebrow cursor-pointer text-ghost underline decoration-glass-border underline-offset-8 transition-colors duration-300 hover:text-fog"
                 >
-                  Send Another
+                  再写一封
                 </button>
               </motion.div>
             ) : (

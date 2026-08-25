@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MessageCircle, X } from 'lucide-react';
 import PlaceholderCard from '@/components/PlaceholderCard';
+import { SITE } from '@/content/site';
 import type { WorkItem } from './data';
 
 interface LightboxProps {
@@ -24,6 +25,20 @@ const EXPO = [0.16, 1, 0.3, 1] as [number, number, number, number];
 export default function Lightbox({ items, index, onClose, onNavigate }: LightboxProps) {
   const open = index >= 0 && index < items.length;
   const item = open ? items[index] : null;
+
+  // F-003 手机触摸滑动切换
+  const touchX = useRef<number | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    touchX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    if (touchX.current === null || items.length < 2) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    touchX.current = null;
+    if (Math.abs(dx) < 48) return; // 短滑不算
+    if (dx < 0) onNavigate((index + 1) % items.length);
+    else onNavigate((index - 1 + items.length) % items.length);
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -55,14 +70,14 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Lightbox
           aria-modal="true"
           aria-label={item.title}
         >
-          {/* Close */}
+          {/* F-003 关闭 —— 文字按钮，≥44px */}
           <button
             type="button"
-            aria-label="Close lightbox"
             onClick={onClose}
-            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-glass-border bg-glass text-mist transition-colors duration-300 hover:border-sakura/50 hover:text-fog sm:right-8 sm:top-8"
+            className="absolute right-4 top-4 z-20 flex min-h-[44px] items-center gap-2 rounded-full border border-glass-border bg-glass px-5 text-mist backdrop-blur-[12px] transition-colors duration-300 hover:border-sakura/50 hover:text-fog sm:right-8 sm:top-8"
           >
-            <X size={18} strokeWidth={1.75} />
+            <X size={16} strokeWidth={1.75} />
+            <span className="eyebrow">关闭</span>
           </button>
 
           {/* Prev / Next */}
@@ -100,8 +115,10 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Lightbox
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.2 } }}
               transition={{ duration: 0.5, ease: EXPO }}
-              className="flex max-h-full w-full max-w-5xl flex-col items-center"
+              className="flex max-h-full w-full max-w-5xl touch-pan-y flex-col items-center"
               onClick={(e) => e.stopPropagation()}
+              onTouchStart={onTouchStart}
+              onTouchEnd={onTouchEnd}
             >
               {item.images.length > 0 ? (
                 <div className="flex max-h-[70vh] items-center justify-center gap-3 sm:gap-5">
@@ -133,8 +150,17 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Lightbox
                 <h3 className="card-title mt-3 text-fog">{item.title}</h3>
                 {item.body && <p className="body-text mt-3 text-[0.95rem]">{item.body}</p>}
                 <p className="eyebrow mt-5 text-ghost/70">
-                  {String(index + 1).padStart(2, '0')} / {String(items.length).padStart(2, '0')}
+                  第 {index + 1} 件 / 共 {items.length} 件
                 </p>
+
+                {/* F-003 「聊聊这个方向」—— 灯箱里也有下一步 */}
+                <a
+                  href={`mailto:${SITE.email}?subject=${encodeURIComponent(`聊聊这个方向：${item.title}`)}`}
+                  className="group/mail mt-6 inline-flex min-h-[44px] items-center gap-2.5 rounded-full border border-sakura/35 bg-sakura/10 px-6 py-2.5 font-sans text-[0.85rem] text-sakura transition-all duration-300 hover:border-sakura hover:bg-sakura/20 hover:shadow-[0_0_28px_rgba(240,166,192,0.25)]"
+                >
+                  <MessageCircle size={15} strokeWidth={1.5} />
+                  聊聊这个方向
+                </a>
               </motion.figcaption>
             </motion.figure>
           </AnimatePresence>

@@ -1,85 +1,41 @@
-import { useState } from 'react';
-import type { CSSProperties, FormEvent } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import type { CSSProperties } from 'react';
+import { Mail } from 'lucide-react';
 import GlassCard from '@/components/GlassCard';
 import Reveal from '@/components/Reveal';
-
-const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+import { SITE } from '@/content/site';
 
 /**
- * Section 5 — newsletter strip (journal.md §5). Centered glass card with a
- * glass-pill email input + violet circular submit. Success morphs the input
- * row into an italic sakura serif welcome line.
+ * 「写信给我」（PRD F-009：撤掉假订阅，换成真实可抵达的联系）。
+ * 没有后端收件服务，就不假装有——直接打开访客的邮件客户端。
  */
 export default function SubscribeStrip() {
-  const [email, setEmail] = useState('');
-  const [done, setDone] = useState(false);
-
-  const submit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!/^\S+@\S+\.\S+$/.test(email.trim())) return;
-    setDone(true);
-  };
-
   return (
     <section className="section-shell pt-0">
       <Reveal threshold={0.2}>
         <GlassCard className="reveal-item mx-auto w-full max-w-[640px] p-10 text-center sm:p-12">
-          <p className="eyebrow text-neon">Newsletter</p>
+          <p className="eyebrow text-neon">Write to Me</p>
           <h2 className="mt-4 font-serif text-[2.2rem] font-light leading-tight text-fog sm:text-[2.6rem]">
-            Letters from the <em className="italic text-sakura">night shift</em>.
+            读完有想法？<em className="italic text-sakura">写信</em>给我。
           </h2>
+          <p className="body-text mx-auto mt-5 max-w-[40ch] text-[0.95rem]">
+            没有订阅机器人，也没有营销邮件。只有一个人，和一个真的会看的邮箱。
+          </p>
 
-          <div className="mt-9 min-h-[60px]">
-            <AnimatePresence mode="wait">
-              {done ? (
-                <motion.p
-                  key="done"
-                  initial={{ opacity: 0, filter: 'blur(6px)' }}
-                  animate={{ opacity: 1, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4, ease: EASE }}
-                  className="py-3 font-serif text-2xl font-light italic text-sakura"
-                >
-                  Welcome to the night shift.
-                </motion.p>
-              ) : (
-                <motion.form
-                  key="form"
-                  onSubmit={submit}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, filter: 'blur(6px)' }}
-                  transition={{ duration: 0.4, ease: EASE }}
-                  className="flex items-center gap-3"
-                >
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    aria-label="Email address"
-                    className="w-full min-w-0 rounded-full border border-glass-border bg-glass px-6 py-3.5 font-sans text-[0.95rem] font-light text-fog placeholder:text-ghost focus:border-sakura/60 focus:shadow-[0_0_24px_rgba(240,166,192,0.25)] focus:outline-none"
-                  />
-                  <button
-                    type="submit"
-                    aria-label="Subscribe"
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet to-violet-deep transition-all duration-300 hover:scale-[1.08] hover:shadow-[0_0_32px_rgba(167,139,250,0.45)] active:scale-95"
-                  >
-                    <ArrowRight size={18} strokeWidth={1.75} className="text-void" />
-                  </button>
-                </motion.form>
-              )}
-            </AnimatePresence>
+          <div className="mt-9 flex justify-center">
+            <a
+              href={`mailto:${SITE.email}?subject=${encodeURIComponent('来自你的网站 · 读后感')}`}
+              className="group inline-flex min-h-[48px] items-center gap-3 rounded-full border border-violet/40 bg-violet/10 px-8 py-3 font-sans text-sm text-fog transition-all duration-300 hover:border-violet hover:bg-violet/20 hover:shadow-[0_0_32px_rgba(167,139,250,0.35)]"
+            >
+              <Mail size={16} strokeWidth={1.5} className="text-violet transition-transform duration-300 group-hover:-translate-y-0.5" />
+              {SITE.email}
+            </a>
           </div>
 
           <p
             className="reveal-item mt-5 font-sans text-[0.8rem] font-light text-ghost"
             style={{ '--reveal-delay': '0.15s' } as CSSProperties}
           >
-            One letter a month. No noise, only signal.
+            点击会打开你自己的邮件应用。
           </p>
         </GlassCard>
       </Reveal>

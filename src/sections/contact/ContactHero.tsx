@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { AtSign, Copy, ExternalLink, Github, Instagram } from 'lucide-react';
+import { AtSign, Copy, ExternalLink, Github } from 'lucide-react';
 import StarMark from '@/components/StarMark';
+import { SOCIALS } from '@/content/site';
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
-const EMAIL = 'hello@zhengchao.design';
+/** 真实邮箱（PRD F-005/F-006）——在 src/content/site.ts 里统一改 */
+const EMAIL = SOCIALS.email;
 
 const TITLE_WORDS: { text: string; accent?: boolean }[] = [
   { text: 'Let’s' },
@@ -45,8 +47,7 @@ export default function ContactHero() {
           </h1>
 
           <p className="anim-fade body-text mt-7 max-w-[46ch]" style={{ animationDelay: '0.7s' }}>
-            Projects, collaborations, commissions — or just a good conversation about systems and
-            sakura.
+            项目、合作、约稿，或者只是想聊聊小说、佛牌和那些发光的系统——都欢迎。
           </p>
 
           {/* Direct channels */}
@@ -55,14 +56,8 @@ export default function ContactHero() {
             <ChannelLink
               icon={Github}
               label="GITHUB"
-              value="github.com/zhengchao"
-              href="https://github.com/zhengchao"
-            />
-            <ChannelLink
-              icon={Instagram}
-              label="INSTAGRAM"
-              value="@zhengchao.studio"
-              href="https://instagram.com/zhengchao.studio"
+              value="github.com/TERRYARISON"
+              href={SOCIALS.github}
               last
             />
           </div>
@@ -74,7 +69,7 @@ export default function ContactHero() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-60" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-neon" />
               </span>
-              <span className="eyebrow text-ghost">Open for Projects — 2025</span>
+              <span className="eyebrow text-ghost">Open for Projects — 2026</span>
             </span>
           </div>
         </div>

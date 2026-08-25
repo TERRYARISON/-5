@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import StarMark from '@/components/StarMark';
 import { ARTICLES } from './articles';
 
@@ -10,6 +10,7 @@ interface ArticleReaderProps {
   index: number;
   onClose: () => void;
   onNext: () => void;
+  onPrev: () => void;
 }
 
 /**
@@ -18,10 +19,25 @@ interface ArticleReaderProps {
  * body copy, one serif pull-quote per essay, and a NEXT ESSAY link that
  * cycles through the index.
  */
-export default function ArticleReader({ index, onClose, onNext }: ArticleReaderProps) {
+export default function ArticleReader({ index, onClose, onNext, onPrev }: ArticleReaderProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0); // F-004 阅读进度
   const article = ARTICLES[index];
   const next = ARTICLES[(index + 1) % ARTICLES.length];
+  const prev = ARTICLES[(index - 1 + ARTICLES.length) % ARTICLES.length];
+
+  // 阅读进度条：监听阅读器自己的滚动容器
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const max = el.scrollHeight - el.clientHeight;
+      setProgress(max > 0 ? Math.min(1, el.scrollTop / max) : 0);
+    };
+    onScroll();
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [index]);
 
   // Lock page scroll while the reader is open; reset reader scroll per essay.
   useEffect(() => {
@@ -52,14 +68,22 @@ export default function ArticleReader({ index, onClose, onNext }: ArticleReaderP
       aria-label={article.pre + article.accent}
     >
       <div ref={scrollRef} data-lenis-prevent className="h-full overflow-y-auto overscroll-contain">
-        {/* Close — glass circle */}
+        {/* F-004 顶部阅读进度条 */}
+        <div className="fixed inset-x-0 top-0 z-20 h-[3px] bg-fog/10">
+          <span
+            className="block h-full bg-gradient-to-r from-sakura to-neon transition-[width] duration-150"
+            style={{ width: `${progress * 100}%` }}
+          />
+        </div>
+
+        {/* F-004 关闭 —— 文字按钮「关闭」，一眼即懂，≥44px */}
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close article"
-          className="fixed right-6 top-6 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-glass-border bg-glass text-mist backdrop-blur-[18px] transition-all duration-300 hover:border-sakura/50 hover:text-sakura hover:shadow-[0_0_40px_rgba(240,166,192,0.35)]"
+          className="fixed right-5 top-5 z-10 flex min-h-[44px] items-center gap-2 rounded-full border border-glass-border bg-glass px-5 text-mist backdrop-blur-[18px] transition-all duration-300 hover:border-sakura/50 hover:text-sakura hover:shadow-[0_0_40px_rgba(240,166,192,0.35)]"
         >
-          <X size={18} strokeWidth={1.5} />
+          <X size={16} strokeWidth={1.5} />
+          <span className="eyebrow">关闭 · 返回列表</span>
         </button>
 
         <motion.article
@@ -142,30 +166,45 @@ export default function ArticleReader({ index, onClose, onNext }: ArticleReaderP
             </motion.blockquote>
           </div>
 
-          {/* Next essay — cycles through the index */}
-          <motion.button
-            type="button"
-            onClick={onNext}
+          {/* F-004 上一篇 / 下一篇 —— 永远有下一步，也有回头路 */}
+          <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.8 }}
+            viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.6, ease: EASE }}
-            className="group mt-16 flex w-full cursor-pointer items-center justify-between gap-6 border-t border-glass-border pt-9 text-left"
+            className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-glass-border bg-glass-border/40 sm:grid-cols-2"
           >
-            <span>
-              <span className="eyebrow block text-ghost">Next Essay</span>
-              <span className="mt-3 block font-serif text-[1.8rem] font-light leading-snug text-fog transition-colors duration-300 group-hover:text-sakura">
+            <button
+              type="button"
+              onClick={onPrev}
+              className="group flex min-h-[88px] cursor-pointer flex-col justify-center gap-2 bg-abyss px-7 py-6 text-left transition-colors duration-300 hover:bg-ink"
+            >
+              <span className="eyebrow flex items-center gap-2 text-ghost transition-colors group-hover:text-neon">
+                <ArrowLeft size={13} strokeWidth={1.5} className="transition-transform duration-300 group-hover:-translate-x-1" />
+                上一篇
+              </span>
+              <span className="font-serif text-lg font-light leading-snug text-mist transition-colors duration-300 group-hover:text-fog">
+                {prev.pre}
+                <em className="italic">{prev.accent}</em>
+                {prev.post ?? ''}
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={onNext}
+              className="group flex min-h-[88px] cursor-pointer flex-col items-end justify-center gap-2 bg-abyss px-7 py-6 text-right transition-colors duration-300 hover:bg-ink"
+            >
+              <span className="eyebrow flex items-center gap-2 text-ghost transition-colors group-hover:text-sakura">
+                下一篇
+                <ArrowRight size={13} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
+              <span className="font-serif text-lg font-light leading-snug text-mist transition-colors duration-300 group-hover:text-fog">
                 {next.pre}
                 <em className="italic">{next.accent}</em>
                 {next.post ?? ''}
               </span>
-            </span>
-            <ArrowRight
-              size={26}
-              strokeWidth={1.25}
-              className="shrink-0 text-sakura transition-transform duration-300 group-hover:translate-x-2"
-            />
-          </motion.button>
+            </button>
+          </motion.div>
         </motion.article>
       </div>
     </motion.div>

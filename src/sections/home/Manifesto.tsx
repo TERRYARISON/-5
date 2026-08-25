@@ -2,26 +2,12 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import { MANIFESTO } from '@/content/home';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const WORDS: { text: string; accent?: boolean }[] = [
-  { text: 'To' },
-  { text: 'gracefully' },
-  { text: 'cultivate' },
-  { text: 'a' },
-  { text: 'newly' },
-  { text: 'balanced' },
-  { text: 'ecosystem,', accent: true },
-  { text: 'we' },
-  { text: 'dissolve' },
-  { text: 'all' },
-  { text: 'boundaries' },
-  { text: 'between' },
-  { text: 'technology' },
-  { text: 'and' },
-  { text: 'nature.' },
-];
+/** 宣言文字在 src/content/home.ts 里改 */
+const WORDS = MANIFESTO.words;
 
 /**
  * Section 3 — manifesto (home.md §3). Centered serif statement with one
@@ -105,7 +91,7 @@ export default function Manifesto() {
       />
 
       <div ref={blockRef} className="relative mx-auto w-full max-w-[900px] px-[clamp(1.25rem,5vw,4rem)] text-center">
-        <p className="eyebrow text-neon">Manifesto</p>
+        <p className="eyebrow text-neon">{MANIFESTO.eyebrow}</p>
 
         <div ref={linesRef} className="mt-10 flex items-center justify-center gap-8">
           <span data-line className="hidden h-px w-16 origin-center bg-sakura/50 sm:block" />
@@ -126,7 +112,7 @@ export default function Manifesto() {
           <span data-line className="hidden h-px w-16 origin-center bg-sakura/50 sm:block" />
         </div>
 
-        <p className="eyebrow mt-10 text-ghost">— Zheng Chao</p>
+        <p className="eyebrow mt-10 text-ghost">{MANIFESTO.signature}</p>
       </div>
     </section>
   );

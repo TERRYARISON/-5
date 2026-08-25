@@ -2,19 +2,10 @@ import type { CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import Reveal from '@/components/Reveal';
+import { JOURNAL_PREVIEW } from '@/content/home';
 
-const ROWS = [
-  {
-    src: '/journal-2.jpg',
-    title: 'The Studio After Midnight',
-    meta: 'Field Notes · Feb 2025 · 4 min',
-  },
-  {
-    src: '/journal-3.jpg',
-    title: 'What a Set Teaches You About Systems',
-    meta: 'Essay · Jan 2025 · 7 min',
-  },
-];
+/** 文章内容在 src/content/home.ts 的 JOURNAL_PREVIEW 里改 */
+const ROWS = JOURNAL_PREVIEW.rows;
 
 /** Section 5 — journal preview (home.md §5): two-column editorial layout. */
 export default function JournalPreview() {
@@ -22,9 +13,9 @@ export default function JournalPreview() {
     <section className="section-shell">
       <Reveal className="flex items-end justify-between gap-8">
         <div>
-          <p className="reveal-item eyebrow text-neon">Journal</p>
+          <p className="reveal-item eyebrow text-neon">{JOURNAL_PREVIEW.eyebrow}</p>
           <h2 className="reveal-item section-h2 mt-4 text-fog" style={{ '--reveal-delay': '0.1s' } as CSSProperties}>
-            Notes From the <em className="italic text-sakura">Night</em>.
+            {JOURNAL_PREVIEW.titlePre}<em className="italic text-sakura">{JOURNAL_PREVIEW.titleAccent}</em>.
           </h2>
         </div>
         <Link
@@ -32,7 +23,7 @@ export default function JournalPreview() {
           className="reveal-item eyebrow hidden shrink-0 text-ghost transition-colors duration-300 hover:text-sakura sm:block"
           style={{ '--reveal-delay': '0.2s' } as CSSProperties}
         >
-          Read All →
+          {JOURNAL_PREVIEW.readAll}
         </Link>
       </Reveal>
 
@@ -42,24 +33,23 @@ export default function JournalPreview() {
           <Link to="/journal" className="group block">
             <div className="clip-reveal overflow-hidden rounded-2xl">
               <img
-                src="/journal-1.jpg"
-                alt="Recording studio with a glowing ON AIR sign"
+                src={JOURNAL_PREVIEW.featured.img}
+                alt={JOURNAL_PREVIEW.featured.imgAlt}
                 className="aspect-[16/10] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 draggable={false}
               />
             </div>
             <p className="reveal-item eyebrow mt-7 text-ghost" style={{ '--reveal-delay': '0.15s' } as CSSProperties}>
-              Essay · Mar 2025 · 5 min
+              {JOURNAL_PREVIEW.featured.meta}
             </p>
             <h3
               className="reveal-item mt-3 font-serif text-[2rem] font-light leading-snug text-fog transition-colors duration-300 group-hover:text-sakura"
               style={{ '--reveal-delay': '0.22s' } as CSSProperties}
             >
-              Notes on Signal &amp; Silence
+              {JOURNAL_PREVIEW.featured.title}
             </h3>
             <p className="reveal-item body-text mt-3 max-w-[52ch]" style={{ '--reveal-delay': '0.3s' } as CSSProperties}>
-              What a recording studio taught me about attention — why the quietest channel in the
-              room is usually the one carrying everything that matters.
+              {JOURNAL_PREVIEW.featured.teaser}
             </p>
           </Link>
         </Reveal>
@@ -75,7 +65,7 @@ export default function JournalPreview() {
             >
               <div className="h-[90px] w-[120px] shrink-0 overflow-hidden rounded-xl">
                 <img
-                  src={row.src}
+                  src={row.img}
                   alt={row.title}
                   className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.08]"
                   draggable={false}

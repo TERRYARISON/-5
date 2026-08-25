@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Sparkles, TerminalSquare } from 'lucide-react';
 import Reveal from '@/components/Reveal';
 import { useLang } from '@/i18n';
 import type { DictKey } from '@/i18n';
+import { WORLDS_CONTENT } from '@/content/home';
 
 interface World {
   to: string;
@@ -18,13 +19,14 @@ interface World {
   layout: string;
 }
 
+/** 三个世界的图片与文案在 src/content/home.ts 的 WORLDS_CONTENT 里改 */
 const WORLDS: World[] = [
   {
     to: '/novels',
-    eyebrow: 'Novels · 长篇小说',
+    eyebrow: WORLDS_CONTENT.entries.novels.eyebrow,
     titleKey: 'home.worlds.novels',
-    desc: '九部长篇与一本灵感合集——曼谷的雨、AI 时代的隐形人、风里才生效的契约。',
-    img: '/novels-hero.jpg',
+    desc: WORLDS_CONTENT.entries.novels.desc,
+    img: WORLDS_CONTENT.entries.novels.img,
     icon: BookOpen,
     accentText: 'text-sakura',
     accentLine: 'border-sakura/50 group-hover:border-sakura',
@@ -33,10 +35,10 @@ const WORLDS: World[] = [
   },
   {
     to: '/amulet',
-    eyebrow: 'Amulet · 泰瑞堂',
+    eyebrow: WORLDS_CONTENT.entries.amulet.eyebrow,
     titleKey: 'home.worlds.amulet',
-    desc: '一枚可以拖着转的金币，几尊有故事的牌子。不以盈利，只为以牌会友、共修功德。',
-    img: '/amulet-window.jpg',
+    desc: WORLDS_CONTENT.entries.amulet.desc,
+    img: WORLDS_CONTENT.entries.amulet.img,
     icon: Sparkles,
     accentText: 'text-neon',
     accentLine: 'border-neon/50 group-hover:border-neon',
@@ -45,10 +47,10 @@ const WORLDS: World[] = [
   },
   {
     to: '/app-lab',
-    eyebrow: 'App Lab · 应用实验室',
+    eyebrow: WORLDS_CONTENT.entries.app.eyebrow,
     titleKey: 'home.worlds.app',
-    desc: '把想法写成应用。PTG 概念原型与公开仓库，更多小玩意儿在路上。',
-    img: '/app-ptg.jpg',
+    desc: WORLDS_CONTENT.entries.app.desc,
+    img: WORLDS_CONTENT.entries.app.img,
     icon: TerminalSquare,
     accentText: 'text-violet',
     accentLine: 'border-violet/50 group-hover:border-violet',
@@ -70,11 +72,11 @@ export default function Worlds() {
           <div className="max-w-[560px]">
             <p className="reveal-item eyebrow text-ghost">More Worlds · {t('home.worlds.eyebrow')}</p>
             <h2 className="reveal-item section-h2 mt-4 text-fog">
-              字、牌、与<em className="italic text-sakura">代码</em>
+              {WORLDS_CONTENT.titlePre}<em className="italic text-sakura">{WORLDS_CONTENT.titleAccent}</em>
             </h2>
           </div>
           <p className="reveal-item body-text max-w-[36ch]" style={{ '--reveal-delay': '0.15s' } as CSSProperties}>
-            工作之外，我把余生的热情分给这三件事。
+            {WORLDS_CONTENT.subtitle}
           </p>
         </Reveal>
 

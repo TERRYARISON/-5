@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react';
 import ArrowButton from '@/components/ArrowButton';
 import Reveal from '@/components/Reveal';
 import { ARTICLES } from './articles';
+import { JOURNAL_MEDIA } from '@/content/journal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,25 +62,27 @@ export default function FeaturedEssay({ onRead }: { onRead: () => void }) {
           <div className="group clip-reveal relative overflow-hidden rounded-2xl">
             <img
               ref={imgRef}
-              src="/journal-concept.jpg"
+              src={JOURNAL_MEDIA.featuredImg}
               alt="Where nature and technology unite — concept film still"
               className="aspect-[4/5] w-full scale-[1.08] object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.13]"
               draggable={false}
             />
-            <video
-              ref={videoRef}
-              src="/journal-concept.mp4"
-              poster="/journal-concept.jpg"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              className="absolute inset-0 h-full w-full object-cover"
-              onError={(e) => {
-                (e.currentTarget as HTMLVideoElement).style.display = 'none';
-              }}
-            />
+            {JOURNAL_MEDIA.featuredVideo && (
+              <video
+                ref={videoRef}
+                src={JOURNAL_MEDIA.featuredVideo}
+                poster={JOURNAL_MEDIA.featuredImg}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="absolute inset-0 h-full w-full object-cover"
+                onError={(e) => {
+                  (e.currentTarget as HTMLVideoElement).style.display = 'none';
+                }}
+              />
+            )}
           </div>
         </Reveal>
 

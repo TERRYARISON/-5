@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 import { ArrowRight } from 'lucide-react';
 import Reveal from '@/components/Reveal';
 import { TIMELINE } from '@/content/profile';
+import { JOURNEY_SHOTS } from '@/content/home';
 import { useLang } from '@/i18n';
 
 /**
@@ -15,14 +16,8 @@ import { useLang } from '@/i18n';
  */
 
 /** 每段履历配一张案例现场图（与经历对应） */
-const SHOTS: { img: string; caption: string }[] = [
-  { img: '/case-event-mahb.jpg', caption: 'MAHB 年度先生盛典 · 现场' },
-  { img: '/case-drama-cqq.jpg', caption: '《传闻中的陈芊芊》· 剧照' },
-  { img: '/case-yuzhe-1.jpg', caption: '《语者 PERS》· 录制现场' },
-  { img: '/case-event-fashionweek.jpg', caption: '时装周 · 后台统筹' },
-  { img: '/case-event-swarovski.jpg', caption: '品牌活动 · 现场' },
-  { img: '/case-event-tvfestival.jpg', caption: '电视节 · 红毯' },
-];
+/** 每段履历配一张案例现场图 —— 在 src/content/home.ts 的 JOURNEY_SHOTS 里改 */
+const SHOTS = JOURNEY_SHOTS;
 
 function Shot({ img, caption, delay, side }: { img: string; caption: string; delay: number; side: 'l' | 'r' }) {
   return (

@@ -4,16 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import KenBurns from '@/components/KenBurns';
 import ArrowButton from '@/components/ArrowButton';
+import { HERO } from '@/content/home';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TITLE_WORDS: { text: string; accent?: boolean }[] = [
-  { text: 'Building' },
-  { text: 'Meaningful' },
-  { text: 'Tech,' },
-  { text: 'From' },
-  { text: 'Within.', accent: true },
-];
+/** 开屏文字与视频都在 src/content/home.ts 里改 */
+const TITLE_WORDS = HERO.titleWords;
 
 /**
  * Section 1 — full-viewport hero (home.md §1). Ken Burns portrait right of
@@ -46,7 +42,7 @@ export default function Hero() {
 
   return (
     <section ref={rootRef} className="relative min-h-[100dvh] overflow-hidden">
-      <KenBurns src="/hero-live2.jpg" video="/hero-live2.mp4" alt="Zheng Chao — cyberpunk sakura portrait" position="65% 30%" />
+      <KenBurns src={HERO.img} video={HERO.video ?? undefined} alt="Zheng Chao — cyberpunk sakura portrait" position={HERO.position} />
 
       {/* Left legibility scrim */}
       <div
@@ -63,7 +59,7 @@ export default function Hero() {
       >
         <div className="max-w-[640px]">
           <p className="anim-rise eyebrow text-neon" style={{ animationDelay: '0.1s' }}>
-            Portfolio — Est. 2025
+            {HERO.eyebrow}
           </p>
 
           <h1 className="hero-h1 mt-6 text-fog">
@@ -82,12 +78,11 @@ export default function Hero() {
           </h1>
 
           <p className="anim-fade body-text mt-7 max-w-[46ch]" style={{ animationDelay: '0.85s' }}>
-            Exploring the intersection of identity, intelligence, and imagination — one system at a
-            time.
+            {HERO.subtitle}
           </p>
 
           <div className="anim-pop mt-10" style={{ animationDelay: '1.05s' }}>
-            <ArrowButton label="Explore Portfolio" to="/work" />
+            <ArrowButton label={HERO.button} to="/work" />
           </div>
         </div>
       </div>

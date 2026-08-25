@@ -1,5 +1,6 @@
 import WorkHero from '@/sections/work/WorkHero';
 import WorkArchive from '@/sections/work/WorkArchive';
+import SectionNav from '@/components/SectionNav';
 import WorkCTA from '@/sections/work/WorkCTA';
 
 /**
@@ -14,6 +15,7 @@ export default function Work() {
       <WorkHero />
       <WorkArchive />
       <WorkCTA />
+      <SectionNav />
     </>
   );
 }

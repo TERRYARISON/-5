@@ -5,6 +5,7 @@ import FeaturedEssay from '@/sections/journal/FeaturedEssay';
 import ArticleIndex from '@/sections/journal/ArticleIndex';
 import ArticleReader from '@/sections/journal/ArticleReader';
 import SubscribeStrip from '@/sections/journal/SubscribeStrip';
+import SectionNav from '@/components/SectionNav';
 import { ARTICLES } from '@/sections/journal/articles';
 
 /**
@@ -21,6 +22,7 @@ export default function Journal() {
       <FeaturedEssay onRead={() => setActive(0)} />
       <ArticleIndex onOpen={setActive} />
       <SubscribeStrip />
+      <SectionNav />
 
       <AnimatePresence>
         {active !== null && (
@@ -28,6 +30,7 @@ export default function Journal() {
             index={active}
             onClose={() => setActive(null)}
             onNext={() => setActive((v) => ((v ?? 0) + 1) % ARTICLES.length)}
+            onPrev={() => setActive((v) => ((v ?? 0) - 1 + ARTICLES.length) % ARTICLES.length)}
           />
         )}
       </AnimatePresence>

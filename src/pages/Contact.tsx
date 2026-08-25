@@ -1,5 +1,6 @@
 import ContactHero from '@/sections/contact/ContactHero';
 import ContactForm from '@/sections/contact/ContactForm';
+import SectionNav from '@/components/SectionNav';
 import FooterNote from '@/sections/contact/FooterNote';
 
 /**
@@ -13,6 +14,7 @@ export default function Contact() {
       <ContactHero />
       <ContactForm />
       <FooterNote />
+      <SectionNav />
     </>
   );
 }

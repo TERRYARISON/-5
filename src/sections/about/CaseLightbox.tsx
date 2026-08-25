@@ -1,4 +1,6 @@
+import { useLang } from '@/i18n';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { TouchEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
@@ -26,6 +28,7 @@ const SWIPE_THRESHOLD = 48;
  * - 大图下方带 title / kpi
  */
 export default function CaseLightbox({ item, onClose }: CaseLightboxProps) {
+  const { t } = useLang();
   const [imgIndex, setImgIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
@@ -68,7 +71,7 @@ export default function CaseLightbox({ item, onClose }: CaseLightboxProps) {
     else prev();
   };
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {item && (
         <motion.div
@@ -88,11 +91,11 @@ export default function CaseLightbox({ item, onClose }: CaseLightboxProps) {
           {/* 关闭 — text button, ≥44px touch target, top right */}
           <button
             type="button"
-            aria-label="关闭灯箱"
+            aria-label="Close"
             onClick={onClose}
             className="absolute right-4 top-4 z-10 flex min-h-[44px] items-center gap-2 rounded-full border border-glass-border bg-glass px-5 text-mist backdrop-blur-md transition-colors duration-300 hover:border-sakura/50 hover:text-fog sm:right-8 sm:top-8"
           >
-            <span className="eyebrow">关闭</span>
+            <span className="eyebrow">{t('ui.close')}</span>
             <X size={15} strokeWidth={1.75} />
           </button>
 
@@ -161,6 +164,7 @@ export default function CaseLightbox({ item, onClose }: CaseLightboxProps) {
           </AnimatePresence>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

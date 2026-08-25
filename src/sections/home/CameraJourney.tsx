@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { useLang } from '@/i18n';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
@@ -14,6 +15,7 @@ gsap.registerPlugin(ScrollTrigger);
  * Fallback (<768px or reduced motion): un-pinned, simple stacked crossfade.
  */
 export default function CameraJourney() {
+  const { t } = useLang();
   const rootRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const frameARef = useRef<HTMLDivElement>(null);
@@ -195,7 +197,7 @@ export default function CameraJourney() {
           ref={hintRef}
           className="pointer-events-none absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 transition-opacity duration-500"
         >
-          <span className="eyebrow text-ghost">继续滚动 · Keep Scrolling</span>
+          <span className="eyebrow text-ghost">{t('ui.keepScrolling')} · Keep Scrolling</span>
           <span className="block h-px w-28 overflow-hidden bg-fog/15">
             <span
               ref={progressRef}

@@ -20,22 +20,22 @@ const NAV_KEY: Record<string, DictKey> = {
   '/contact': 'nav.contact',
 };
 
-/** 三语切换小药丸：中 / EN / ไทย */
-function LangSwitcher({ className = '' }: { className?: string }) {
+/** 三语切换小药丸：中 / EN / ไทย（compact = 手机顶栏紧凑版） */
+function LangSwitcher({ className = '', compact = false }: { className?: string; compact?: boolean }) {
   const { lang, setLang } = useLang();
   return (
     <div
-      className={`flex items-center gap-1 rounded-full border border-glass-border/70 bg-void/40 p-1 backdrop-blur-md ${className}`}
+      className={`flex items-center gap-1 rounded-full border border-glass-border/70 bg-void/40 ${compact ? 'p-0.5' : 'p-1'} backdrop-blur-md ${className}`}
       role="group" aria-label="语言 / Language / ภาษา"
     >
-      <Languages size={13} strokeWidth={1.5} className="ml-1.5 text-ghost" aria-hidden="true" />
+      {!compact && <Languages size={13} strokeWidth={1.5} className="ml-1.5 text-ghost" aria-hidden="true" />}
       {LANGS.map((l) => (
         <button
           key={l.id}
           type="button"
           onClick={() => setLang(l.id)}
           aria-pressed={lang === l.id}
-          className={`min-h-[32px] min-w-[36px] rounded-full px-2 font-sans text-[0.68rem] tracking-[0.08em] transition-all duration-300 ${
+          className={`${compact ? 'min-h-[30px] min-w-[30px] px-1.5 text-[0.62rem]' : 'min-h-[32px] min-w-[36px] px-2 text-[0.68rem]'} rounded-full font-sans tracking-[0.08em] transition-all duration-300 ${
             lang === l.id
               ? 'bg-sakura/20 text-sakura shadow-[0_0_14px_rgba(240,166,192,0.25)]'
               : 'text-ghost hover:text-fog'
@@ -110,22 +110,26 @@ export default function Navbar() {
             <LangSwitcher className="ml-2" />
           </nav>
 
-          <button
-            type="button"
-            aria-label={open ? 'Close menu' : 'Open menu'}
-            aria-expanded={open}
-            onClick={() => setOpen((v) => !v)}
-            className="relative flex h-10 items-center justify-center gap-2.5 rounded-full border border-glass-border/70 bg-void/40 px-3.5 backdrop-blur-md md:hidden"
-          >
-            <span className="eyebrow text-[0.6rem] text-fog">{open ? 'Close' : 'Menu'}</span>
-            <span className="flex flex-col items-center gap-[5px]">
-            <span
-              className={`block h-px w-4 bg-fog transition-all duration-300 ${open ? 'translate-y-[3px] rotate-45' : ''}`}
-            />
-            <span
-              className={`block h-px w-4 bg-fog transition-all duration-300 ${open ? '-translate-y-[3px] -rotate-45' : ''}`}
-            />
-            </span></button>
+          {/* 手机端：全局翻译按钮直接露在顶栏（不用开菜单）+ 菜单键 */}
+          <div className="flex items-center gap-2 md:hidden">
+            <LangSwitcher compact />
+            <button
+              type="button"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}
+              className="relative flex h-10 items-center justify-center gap-2.5 rounded-full border border-glass-border/70 bg-void/40 px-3.5 backdrop-blur-md"
+            >
+              <span className="eyebrow text-[0.6rem] text-fog">{open ? 'Close' : 'Menu'}</span>
+              <span className="flex flex-col items-center gap-[5px]">
+              <span
+                className={`block h-px w-4 bg-fog transition-all duration-300 ${open ? 'translate-y-[3px] rotate-45' : ''}`}
+              />
+              <span
+                className={`block h-px w-4 bg-fog transition-all duration-300 ${open ? '-translate-y-[3px] -rotate-45' : ''}`}
+              />
+              </span></button>
+          </div>
         </div>
       </header>
 

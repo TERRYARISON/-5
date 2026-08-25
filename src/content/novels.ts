@@ -16,6 +16,12 @@ export interface Novel {
   tags: string[];
 }
 
+/** 小说页页头背景（视频 + 兜底图；video 写 null 则只显示图片） */
+export const NOVELS_HERO = {
+  img: '/novels-hero.jpg',
+  video: '/novels-hero.mp4' as string | null,
+};
+
 export const NOVELS: Novel[] = [
   {
     id: 'huilan',

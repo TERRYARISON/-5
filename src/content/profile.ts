@@ -20,6 +20,21 @@ export const BIO = {
   motto: 'Building meaningful things, from within.',
 };
 
+/**
+ * 关于页 / 联系页的配图
+ * portraitVideo 留空（null）= 静态照片；填 '/视频名.mp4' = 动态肖像盖在照片上
+ */
+export const PORTRAIT_MEDIA = {
+  /** 关于页顶部大照片（个人照片） */
+  portraitImg: '/portrait-main.jpg',
+  portraitVideo: null as string | null,
+  /** 关于页中部「街头双联」两张图 */
+  streetLeft: '/street-market.jpg',
+  streetRight: '/street-tattoo.jpg',
+  /** 联系页右侧照片 */
+  contactImg: '/portrait-studio.jpg',
+};
+
 /** 简历时间线（按时间倒序展示） */
 export const TIMELINE = [
   {

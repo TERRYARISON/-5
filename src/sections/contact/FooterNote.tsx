@@ -36,7 +36,7 @@ export default function FooterNote() {
               >
                 {word.text}
               </span>
-              {i < WORDS.length - 1 ? ' ' : ''}
+              {i < WORDS.length - 1 ? ' ' : ''}
             </span>
           ))}
         </h2>

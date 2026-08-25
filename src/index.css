@@ -36,6 +36,8 @@
 
   html {
     scroll-behavior: auto;
+    /* 装饰性元素（花瓣画布/光晕/水印）不制造横向滚动 */
+    overflow-x: clip;
   }
 
   body {

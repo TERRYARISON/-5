@@ -1,21 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Twitter, Instagram, Mail } from 'lucide-react';
+import { Github, Mail } from 'lucide-react';
 import StarMark from './StarMark';
+import { NAV_LINKS, SOCIALS as SOCIAL_LINKS } from '../content/site';
 
-const LINKS = [
-  { to: '/work', label: 'Work' },
-  { to: '/journal', label: 'Journal' },
-  { to: '/about', label: 'About' },
-  { to: '/contact', label: 'Contact' },
-];
+const LINKS = NAV_LINKS;
 
+/** 真实社交链接（PRD F-006）——地址在 src/content/site.ts 里改 */
 const SOCIALS = [
-  { icon: Github, label: 'GitHub', href: 'https://github.com' },
-  { icon: Twitter, label: 'X', href: 'https://x.com' },
-  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com' },
-  { icon: Mail, label: 'Email', href: 'mailto:hello@zhengchao.dev' },
+  { icon: Github, label: 'GitHub', href: SOCIAL_LINKS.github },
+  { icon: Mail, label: 'Email', href: `mailto:${SOCIAL_LINKS.email}` },
 ];
 
 /**

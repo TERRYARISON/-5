@@ -1,19 +1,14 @@
 import { Link } from 'react-router-dom';
-import { Github, Twitter, Instagram, Mail } from 'lucide-react';
+import { Github, Mail } from 'lucide-react';
 import StarMark from './StarMark';
+import { NAV_LINKS, SOCIALS as SOCIAL_LINKS } from '../content/site';
 
-const LINKS = [
-  { to: '/work', label: 'Work' },
-  { to: '/journal', label: 'Journal' },
-  { to: '/about', label: 'About' },
-  { to: '/contact', label: 'Contact' },
-];
+const LINKS = NAV_LINKS;
 
+/** 真实社交链接（PRD F-006） */
 const SOCIALS = [
-  { icon: Github, label: 'GitHub', href: 'https://github.com' },
-  { icon: Twitter, label: 'X', href: 'https://x.com' },
-  { icon: Instagram, label: 'Instagram', href: 'https://instagram.com' },
-  { icon: Mail, label: 'Email', href: 'mailto:hello@zhengchao.dev' },
+  { icon: Github, label: 'GitHub', href: SOCIAL_LINKS.github },
+  { icon: Mail, label: 'Email', href: `mailto:${SOCIAL_LINKS.email}` },
 ];
 
 /** Shared footer (design.md §6): three columns over `abyss`, "ZC" watermark. */
@@ -73,7 +68,7 @@ export default function Footer() {
       </div>
 
       <div className="relative mx-auto flex w-full max-w-[1280px] flex-col gap-2 border-t border-glass-border px-[clamp(1.25rem,5vw,4rem)] py-7 sm:flex-row sm:items-center sm:justify-between">
-        <p className="eyebrow text-ghost">© 2025 Zheng Chao</p>
+        <p className="eyebrow text-ghost">© 2026 Zheng Chao</p>
         <p className="eyebrow text-ghost">Crafted under neon sakura</p>
       </div>
     </footer>

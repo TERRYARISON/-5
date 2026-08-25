@@ -3,14 +3,12 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import ArrowButton from '@/components/ArrowButton';
+import { WORK_HERO } from '@/content/work';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TITLE_WORDS: { text: string; accent?: boolean }[] = [
-  { text: 'Projects' },
-  { text: '&', accent: true },
-  { text: 'Concepts' },
-];
+/** 页头文字与背景在 src/content/work.ts 里改 */
+const TITLE_WORDS = WORK_HERO.titleWords;
 
 /** Section anchors the index counter tracks (hero = 01, then the four groups). */
 const COUNTER_IDS = ['work-hero', 'group-digital', 'group-covers', 'group-art', 'group-studio'];
@@ -96,26 +94,28 @@ export default function WorkHero() {
 
       <div className="kenburns-frame">
         <img
-          src="/work-concept.jpg"
+          src={WORK_HERO.img}
           alt="Biotech sakura concept film still"
           className="work-hero-kb-img h-full w-full object-cover will-change-transform"
           style={{ objectPosition: '50% 30%' }}
           draggable={false}
         />
-        <video
-          src="/work-concept.mp4"
-          poster="/work-concept.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: '50% 30%' }}
-          onError={(e) => {
-            (e.currentTarget as HTMLVideoElement).style.display = 'none';
-          }}
-        />
+        {WORK_HERO.video && (
+          <video
+            src={WORK_HERO.video}
+            poster={WORK_HERO.img}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: '50% 30%' }}
+            onError={(e) => {
+              (e.currentTarget as HTMLVideoElement).style.display = 'none';
+            }}
+          />
+        )}
         <div className="kenburns-vignette" />
       </div>
 
@@ -134,7 +134,7 @@ export default function WorkHero() {
       >
         <div className="max-w-[640px]">
           <p className="anim-rise eyebrow text-neon" style={{ animationDelay: '0.1s' }}>
-            Selected Works · 2023–2025
+            {WORK_HERO.eyebrow}
           </p>
 
           <h1 className="hero-h1 mt-6 text-fog">
@@ -153,11 +153,11 @@ export default function WorkHero() {
           </h1>
 
           <p className="anim-fade body-text mt-7 max-w-[46ch]" style={{ animationDelay: '0.7s' }}>
-            A collection of ideas, products, and systems — where creativity meets technology.
+            {WORK_HERO.subtitle}
           </p>
 
           <div className="anim-pop mt-10" style={{ animationDelay: '0.9s' }}>
-            <ArrowButton label="Explore Projects" onClick={scrollToGrid} />
+            <ArrowButton label={WORK_HERO.button} onClick={scrollToGrid} />
           </div>
         </div>
       </div>

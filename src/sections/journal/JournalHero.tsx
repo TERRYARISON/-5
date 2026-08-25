@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import KenBurns from '@/components/KenBurns';
+import { JOURNAL_MEDIA } from '@/content/journal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -43,7 +44,7 @@ export default function JournalHero() {
 
   return (
     <section ref={rootRef} className="relative flex min-h-[60vh] overflow-hidden">
-      <KenBurns src="/journal-2.jpg" alt="Studio at night, city glow" />
+      <KenBurns src={JOURNAL_MEDIA.heroImg} alt="Studio at night, city glow" />
       {/* Dark scrim 0.7 (journal.md §1) on top of the Ken Burns vignette */}
       <div className="anim-fade absolute inset-0 bg-[rgba(7,7,13,0.7)]" />
 

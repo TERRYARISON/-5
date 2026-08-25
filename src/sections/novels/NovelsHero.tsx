@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { ChevronDown } from 'lucide-react';
-import { NOVELS } from '@/content/novels';
+import { NOVELS, NOVELS_HERO } from '@/content/novels';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,27 +45,29 @@ export default function NovelsHero() {
       {/* Ambient video over a poster still (still = fallback + first frame) */}
       <div className="kenburns-frame">
         <img
-          src="/novels-hero.jpg"
+          src={NOVELS_HERO.img}
           alt="小说页头 —— 赛博樱花氛围影像"
           className="kenburns-img"
           style={{ objectPosition: '50% 35%' }}
           draggable={false}
         />
-        <video
-          src="/novels-hero.mp4"
-          poster="/novels-hero.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full scale-[1.06] object-cover"
-          style={{ objectPosition: '50% 35%', filter: 'blur(3px) brightness(0.72) saturate(1.05)' }}
-          onError={(e) => {
-            (e.currentTarget as HTMLVideoElement).style.display = 'none';
-          }}
-        />
+        {NOVELS_HERO.video && (
+          <video
+            src={NOVELS_HERO.video}
+            poster={NOVELS_HERO.img}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full scale-[1.06] object-cover"
+            style={{ objectPosition: '50% 35%', filter: 'blur(3px) brightness(0.72) saturate(1.05)' }}
+            onError={(e) => {
+              (e.currentTarget as HTMLVideoElement).style.display = 'none';
+            }}
+          />
+        )}
         <div className="kenburns-vignette" />
       </div>
 

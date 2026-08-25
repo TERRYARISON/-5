@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { AtSign, Copy, ExternalLink, Github } from 'lucide-react';
 import StarMark from '@/components/StarMark';
 import { SOCIALS } from '@/content/site';
+import { PORTRAIT_MEDIA } from '@/content/profile';
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
 /** 真实邮箱（PRD F-005/F-006）——在 src/content/site.ts 里统一改 */
@@ -90,7 +91,7 @@ export default function ContactHero() {
           >
             {/* Inner Ken Burns 1.0 → 1.05 / 28s (contact.md §1) */}
             <motion.img
-              src="/portrait-studio.jpg"
+              src={PORTRAIT_MEDIA.contactImg}
               alt="Zheng Chao — studio portrait"
               draggable={false}
               className="aspect-[4/5] w-full object-cover"

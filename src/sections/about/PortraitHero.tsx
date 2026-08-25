@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import ArrowButton from '@/components/ArrowButton';
-import { BIO } from '@/content/profile';
+import { BIO, PORTRAIT_MEDIA } from '@/content/profile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -118,25 +118,28 @@ export default function PortraitHero() {
             >
               <img
                 ref={imgRef}
-                src="/about-live.jpg"
-                alt={`${BIO.name} — black-gold kintsugi portrait with sakura`}
+                src={PORTRAIT_MEDIA.portraitImg}
+                alt={`${BIO.name} — 个人照片`}
                 className="h-full w-full object-cover will-change-transform"
+                style={{ objectPosition: '50% 22%' }}
                 draggable={false}
               />
-              <video
-                ref={videoRef}
-                src="/about-live.mp4"
-                poster="/about-live.jpg"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                className="absolute inset-0 h-full w-full object-cover"
-                onError={(e) => {
-                  (e.currentTarget as HTMLVideoElement).style.display = 'none';
-                }}
-              />
+              {PORTRAIT_MEDIA.portraitVideo && (
+                <video
+                  ref={videoRef}
+                  src={PORTRAIT_MEDIA.portraitVideo}
+                  poster={PORTRAIT_MEDIA.portraitImg}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  className="absolute inset-0 h-full w-full object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLVideoElement).style.display = 'none';
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useLang } from '@/i18n';
+import { JOURNEY } from '@/content/home';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 
@@ -124,36 +125,38 @@ export default function CameraJourney() {
         {/* Frame A — reclining portrait (ambient motion video over the still) */}
         <div ref={frameARef} className="absolute inset-0 will-change-transform">
           <img
-            src="/journey-live.jpg"
-            alt="Zheng Chao from behind, neon wings beneath the sakura trees"
+            src={JOURNEY.frameA.img}
+            alt={JOURNEY.frameA.alt}
             className="h-full w-full object-cover"
             style={{ objectPosition: '50% 30%' }}
             draggable={false}
           />
-          <video
-            ref={frameAVideoRef}
-            src="/journey-live.mp4"
-            poster="/journey-live.jpg"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            className="absolute inset-0 h-full w-full object-cover"
-            style={{ objectPosition: '50% 30%' }}
-            onError={(e) => {
-              (e.currentTarget as HTMLVideoElement).style.opacity = '0';
-            }}
-          />
+          {JOURNEY.frameA.video && (
+            <video
+              ref={frameAVideoRef}
+              src={JOURNEY.frameA.video}
+              poster={JOURNEY.frameA.img}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ objectPosition: '50% 30%' }}
+              onError={(e) => {
+                (e.currentTarget as HTMLVideoElement).style.opacity = '0';
+              }}
+            />
+          )}
         </div>
 
         {/* Frame B — hero portrait detail crop */}
         <div ref={frameBRef} className="absolute inset-0 will-change-transform">
           <img
-            src="/portrait-hero.jpg"
-            alt="Detail — crystal vines and circuit light"
+            src={JOURNEY.frameB.img}
+            alt={JOURNEY.frameB.alt}
             className="h-full w-full object-cover"
-            style={{ objectPosition: '50% 55%' }}
+            style={{ objectPosition: '50% 30%' }}
             draggable={false}
           />
         </div>
@@ -172,12 +175,12 @@ export default function CameraJourney() {
           ref={captionARef}
           className="glass-card absolute bottom-[10%] left-[clamp(1.25rem,5vw,4rem)] z-10 max-w-[380px] p-7"
         >
-          <p className="eyebrow text-neon">The Practice</p>
+          <p className="eyebrow text-neon">{JOURNEY.captionA.eyebrow}</p>
           <p className="mt-4 font-serif text-[1.9rem] font-light leading-snug text-fog">
-            Where circuits learn to <em className="italic text-sakura">bloom</em>.
+            {JOURNEY.captionA.titlePre}<em className="italic text-sakura">{JOURNEY.captionA.titleAccent}</em>.
           </p>
           <p className="body-text mt-4 text-[0.95rem]">
-            Each project begins as a seed — a question about how we live with the systems we build.
+            {JOURNEY.captionA.body}
           </p>
         </div>
 
@@ -186,9 +189,9 @@ export default function CameraJourney() {
           ref={captionBRef}
           className="absolute right-[clamp(1.25rem,5vw,4rem)] top-[16%] z-10 max-w-[340px] text-right"
         >
-          <p className="eyebrow text-neon">Detail</p>
+          <p className="eyebrow text-neon">{JOURNEY.captionB.eyebrow}</p>
           <p className="mt-4 font-serif text-[2rem] font-light leading-snug text-fog">
-            Every trace of light is <em className="italic text-sakura">intentional</em>.
+            {JOURNEY.captionB.titlePre}<em className="italic text-sakura">{JOURNEY.captionB.titleAccent}</em>.
           </p>
         </div>
 

@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import GlassCard from '@/components/GlassCard';
 import ArrowButton from '@/components/ArrowButton';
 import Reveal from '@/components/Reveal';
+import { FEATURED } from '@/content/home';
 
 interface Project {
   title: string;
@@ -13,34 +14,8 @@ interface Project {
   offset: string;
 }
 
-const PROJECTS: Project[] = [
-  {
-    title: 'Silicon Rituals',
-    eyebrow: 'Digital Essay',
-    meta: 'Reading time · 6 min',
-    body: 'On the habits we keep with machines.',
-    ornament: true,
-    offset: 'md:col-start-1 md:col-span-5',
-  },
-  {
-    title: 'Bloom',
-    eyebrow: 'Wellness App Concept',
-    body: 'An ambient wellness experience that blends nature, technology, and mindful living.',
-    offset: 'md:col-start-7 md:col-span-5',
-  },
-  {
-    title: 'Atelier',
-    eyebrow: 'AI Co-Creation',
-    body: 'A creative companion for moodboarding, ideation, and visual exploration.',
-    offset: 'md:col-start-2 md:col-span-5 md:-mt-10',
-  },
-  {
-    title: 'Fragments',
-    eyebrow: 'Design System',
-    body: 'UI components, interaction patterns, and visual language for digital storytellers.',
-    offset: 'md:col-start-8 md:col-span-5 md:mt-10',
-  },
-];
+/** 项目卡片内容在 src/content/home.ts 里改 */
+const PROJECTS: Project[] = FEATURED.projects;
 
 /**
  * Section 4 — featured work (home.md §4). Four floating glass cards on an
@@ -67,11 +42,11 @@ export default function FeaturedWork() {
               Projects <em className="italic text-sakura">&</em> Concepts
             </h2>
             <p className="reveal-item body-text mt-5" style={{ '--reveal-delay': '0.1s' } as CSSProperties}>
-              A collection of ideas, products, and systems — where creativity meets technology.
+              {FEATURED.subtitle}
             </p>
           </div>
           <div className="reveal-item" style={{ '--reveal-delay': '0.2s' } as CSSProperties}>
-            <ArrowButton label="Explore Projects" to="/work" />
+            <ArrowButton label={FEATURED.button} to="/work" />
           </div>
         </Reveal>
 

@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import Reveal from '@/components/Reveal';
+import { PORTRAIT_MEDIA } from '@/content/profile';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,7 +89,7 @@ export default function StreetDiptych() {
             <div className="group overflow-hidden rounded-2xl border border-glass-border transition-colors duration-500 hover:border-sakura/50">
               <div className="aspect-[4/5] overflow-hidden">
                 <img
-                  src="/street-market.jpg"
+                  src={PORTRAIT_MEDIA.streetLeft}
                   alt="Street photography — market light and shadow"
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   draggable={false}
@@ -111,7 +112,7 @@ export default function StreetDiptych() {
             <div className="group overflow-hidden rounded-2xl border border-glass-border transition-colors duration-500 hover:border-sakura/50">
               <div className="aspect-[3/4] overflow-hidden">
                 <img
-                  src="/street-tattoo.jpg"
+                  src={PORTRAIT_MEDIA.streetRight}
                   alt="Street photography — tattooed arm in a Bangkok market"
                   className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                   draggable={false}

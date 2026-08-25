@@ -5,10 +5,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import ArrowButton from '@/components/ArrowButton';
 import Reveal from '@/components/Reveal';
+import { CLOSING } from '@/content/home';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const WORDS = ["Let's", 'build', 'something', 'that', 'blooms.'];
+/** 结尾文案与背景图在 src/content/home.ts 里改 */
+const WORDS = CLOSING.words;
 
 /**
  * Section 6 — closing CTA (home.md §6). 60vh, heavily blurred reclining
@@ -48,7 +50,7 @@ export default function ClosingCTA() {
       {/* Blurred backdrop */}
       <div ref={bgRef} className="absolute -inset-10">
         <img
-          src="/portrait-recline.jpg"
+          src={CLOSING.bgImg}
           alt=""
           aria-hidden="true"
           className="h-full w-full object-cover opacity-[0.14] blur-[40px]"
@@ -62,7 +64,7 @@ export default function ClosingCTA() {
           {WORDS.map((word, i) => (
             <span
               key={word}
-              className={`reveal-item mr-[0.26em] inline-block ${word === 'blooms.' ? 'italic text-sakura' : ''}`}
+              className={`reveal-item mr-[0.26em] inline-block ${word === CLOSING.accentWord ? 'italic text-sakura' : ''}`}
               style={{ '--reveal-delay': `${i * 0.08}s` } as CSSProperties}
             >
               {word}
@@ -70,7 +72,7 @@ export default function ClosingCTA() {
           ))}
         </h2>
         <div className="reveal-item" style={{ '--reveal-delay': '0.5s' } as CSSProperties}>
-          <ArrowButton label="Get in Touch" to="/contact" pulse />
+          <ArrowButton label={CLOSING.button} to="/contact" pulse />
         </div>
       </Reveal>
     </section>

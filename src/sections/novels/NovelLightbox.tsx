@@ -1,4 +1,6 @@
+import { useLang } from '@/i18n';
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import StarMark from '@/components/StarMark';
@@ -24,6 +26,7 @@ const SWIPE_THRESHOLD = 56;
  * · framer-motion AnimatePresence 进出场。
  */
 export default function NovelLightbox({ items, index, onClose, onNavigate }: NovelLightboxProps) {
+  const { t } = useLang();
   const open = index >= 0 && index < items.length;
   const item = open ? items[index] : null;
   const touchStartX = useRef<number | null>(null);
@@ -46,7 +49,7 @@ export default function NovelLightbox({ items, index, onClose, onNavigate }: Nov
   const goPrev = () => onNavigate((index - 1 + items.length) % items.length);
   const goNext = () => onNavigate((index + 1) % items.length);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {item && (
         <motion.div
@@ -68,7 +71,7 @@ export default function NovelLightbox({ items, index, onClose, onNavigate }: Nov
             className="absolute right-4 top-4 z-20 flex h-11 items-center gap-2 rounded-full border border-glass-border bg-glass px-5 font-sans text-sm text-mist transition-colors duration-300 hover:border-sakura/50 hover:text-fog sm:right-8 sm:top-8"
           >
             <X size={16} strokeWidth={1.75} />
-            关闭
+            {t('ui.close')}
           </button>
 
           {/* Prev / Next — ≥44px */}
@@ -193,6 +196,7 @@ export default function NovelLightbox({ items, index, onClose, onNavigate }: Nov
           </AnimatePresence>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

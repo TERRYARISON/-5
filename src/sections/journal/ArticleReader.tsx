@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, X } from 'lucide-react';
 import StarMark from '@/components/StarMark';
 import { ARTICLES } from './articles';
+import { useLang } from '@/i18n';
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
 
@@ -22,6 +24,7 @@ interface ArticleReaderProps {
 export default function ArticleReader({ index, onClose, onNext, onPrev }: ArticleReaderProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0); // F-004 阅读进度
+  const { t } = useLang();
   const article = ARTICLES[index];
   const next = ARTICLES[(index + 1) % ARTICLES.length];
   const prev = ARTICLES[(index - 1 + ARTICLES.length) % ARTICLES.length];
@@ -56,7 +59,7 @@ export default function ArticleReader({ index, onClose, onNext, onPrev }: Articl
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  return (
+  return createPortal(
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -83,7 +86,7 @@ export default function ArticleReader({ index, onClose, onNext, onPrev }: Articl
           className="fixed right-5 top-5 z-10 flex min-h-[44px] items-center gap-2 rounded-full border border-glass-border bg-glass px-5 text-mist backdrop-blur-[18px] transition-all duration-300 hover:border-sakura/50 hover:text-sakura hover:shadow-[0_0_40px_rgba(240,166,192,0.35)]"
         >
           <X size={16} strokeWidth={1.5} />
-          <span className="eyebrow">关闭 · 返回列表</span>
+          <span className="eyebrow">{t('ui.close')}</span>
         </button>
 
         <motion.article
@@ -181,7 +184,7 @@ export default function ArticleReader({ index, onClose, onNext, onPrev }: Articl
             >
               <span className="eyebrow flex items-center gap-2 text-ghost transition-colors group-hover:text-neon">
                 <ArrowLeft size={13} strokeWidth={1.5} className="transition-transform duration-300 group-hover:-translate-x-1" />
-                上一篇
+                {t('ui.prevArticle')}
               </span>
               <span className="font-serif text-lg font-light leading-snug text-mist transition-colors duration-300 group-hover:text-fog">
                 {prev.pre}
@@ -195,7 +198,7 @@ export default function ArticleReader({ index, onClose, onNext, onPrev }: Articl
               className="group flex min-h-[88px] cursor-pointer flex-col items-end justify-center gap-2 bg-abyss px-7 py-6 text-right transition-colors duration-300 hover:bg-ink"
             >
               <span className="eyebrow flex items-center gap-2 text-ghost transition-colors group-hover:text-sakura">
-                下一篇
+                {t('ui.nextArticle')}
                 <ArrowRight size={13} strokeWidth={1.5} className="transition-transform duration-300 group-hover:translate-x-1" />
               </span>
               <span className="font-serif text-lg font-light leading-snug text-mist transition-colors duration-300 group-hover:text-fog">
@@ -207,6 +210,7 @@ export default function ArticleReader({ index, onClose, onNext, onPrev }: Articl
           </motion.div>
         </motion.article>
       </div>
-    </motion.div>
+    </motion.div>,
+    document.body,
   );
 }

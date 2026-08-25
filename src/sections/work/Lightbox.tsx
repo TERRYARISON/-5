@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, MessageCircle, X } from 'lucide-react';
 import PlaceholderCard from '@/components/PlaceholderCard';
 import { SITE } from '@/content/site';
+import { useLang } from '@/i18n';
 import type { WorkItem } from './data';
 
 interface LightboxProps {
@@ -23,6 +25,7 @@ const EXPO = [0.16, 1, 0.3, 1] as [number, number, number, number];
  * placeholder panel.
  */
 export default function Lightbox({ items, index, onClose, onNavigate }: LightboxProps) {
+  const { t } = useLang();
   const open = index >= 0 && index < items.length;
   const item = open ? items[index] : null;
 
@@ -55,7 +58,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Lightbox
     };
   }, [open, index, items.length, onClose, onNavigate]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {item && (
         <motion.div
@@ -77,7 +80,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Lightbox
             className="absolute right-4 top-4 z-20 flex min-h-[44px] items-center gap-2 rounded-full border border-glass-border bg-glass px-5 text-mist backdrop-blur-[12px] transition-colors duration-300 hover:border-sakura/50 hover:text-fog sm:right-8 sm:top-8"
           >
             <X size={16} strokeWidth={1.75} />
-            <span className="eyebrow">关闭</span>
+            <span className="eyebrow">{t('ui.close')}</span>
           </button>
 
           {/* Prev / Next */}
@@ -150,7 +153,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Lightbox
                 <h3 className="card-title mt-3 text-fog">{item.title}</h3>
                 {item.body && <p className="body-text mt-3 text-[0.95rem]">{item.body}</p>}
                 <p className="eyebrow mt-5 text-ghost/70">
-                  第 {index + 1} 件 / 共 {items.length} 件
+                  {t('lb.itemOf')} {index + 1} {t('lb.of')} {items.length}
                 </p>
 
                 {/* F-003 「聊聊这个方向」—— 灯箱里也有下一步 */}
@@ -159,13 +162,14 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Lightbox
                   className="group/mail mt-6 inline-flex min-h-[44px] items-center gap-2.5 rounded-full border border-sakura/35 bg-sakura/10 px-6 py-2.5 font-sans text-[0.85rem] text-sakura transition-all duration-300 hover:border-sakura hover:bg-sakura/20 hover:shadow-[0_0_28px_rgba(240,166,192,0.25)]"
                 >
                   <MessageCircle size={15} strokeWidth={1.5} />
-                  聊聊这个方向
+                  {t('lb.discuss')}
                 </a>
               </motion.figcaption>
             </motion.figure>
           </AnimatePresence>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }

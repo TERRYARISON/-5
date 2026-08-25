@@ -2,11 +2,13 @@ import { Link } from 'react-router-dom';
 import type { CSSProperties } from 'react';
 import { ArrowRight, BookOpen, Sparkles, TerminalSquare } from 'lucide-react';
 import Reveal from '@/components/Reveal';
+import { useLang } from '@/i18n';
+import type { DictKey } from '@/i18n';
 
 interface World {
   to: string;
   eyebrow: string;
-  title: string;
+  titleKey: DictKey;
   desc: string;
   img: string;
   icon: typeof BookOpen;
@@ -20,7 +22,7 @@ const WORLDS: World[] = [
   {
     to: '/novels',
     eyebrow: 'Novels · 长篇小说',
-    title: '小说',
+    titleKey: 'home.worlds.novels',
     desc: '九部长篇与一本灵感合集——曼谷的雨、AI 时代的隐形人、风里才生效的契约。',
     img: '/novels-hero.jpg',
     icon: BookOpen,
@@ -32,7 +34,7 @@ const WORLDS: World[] = [
   {
     to: '/amulet',
     eyebrow: 'Amulet · 泰瑞堂',
-    title: '佛牌小店',
+    titleKey: 'home.worlds.amulet',
     desc: '一枚可以拖着转的金币，几尊有故事的牌子。不以盈利，只为以牌会友、共修功德。',
     img: '/amulet-window.jpg',
     icon: Sparkles,
@@ -44,7 +46,7 @@ const WORLDS: World[] = [
   {
     to: '/app-lab',
     eyebrow: 'App Lab · 应用实验室',
-    title: 'APP',
+    titleKey: 'home.worlds.app',
     desc: '把想法写成应用。PTG 概念原型与公开仓库，更多小玩意儿在路上。',
     img: '/app-ptg.jpg',
     icon: TerminalSquare,
@@ -60,12 +62,13 @@ const WORLDS: World[] = [
  * 大图 + 压暗 + hover 位移微光，一眼即懂，细看有心机。
  */
 export default function Worlds() {
+  const { t } = useLang();
   return (
     <section className="relative">
       <div className="section-shell">
         <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="max-w-[560px]">
-            <p className="reveal-item eyebrow text-ghost">More Worlds · 继续往里走</p>
+            <p className="reveal-item eyebrow text-ghost">More Worlds · {t('home.worlds.eyebrow')}</p>
             <h2 className="reveal-item section-h2 mt-4 text-fog">
               字、牌、与<em className="italic text-sakura">代码</em>
             </h2>
@@ -89,7 +92,7 @@ export default function Worlds() {
                 {/* 背景图 */}
                 <img
                   src={w.img}
-                  alt={w.title}
+                  alt={t(w.titleKey)}
                   loading="lazy"
                   draggable={false}
                   className="absolute inset-0 h-full w-full object-cover opacity-55 transition-all duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.045] group-hover:opacity-75"
@@ -104,7 +107,7 @@ export default function Worlds() {
                     {w.eyebrow}
                   </p>
                   <h3 className="font-serif text-[clamp(2rem,4vw,3rem)] font-light leading-none text-fog">
-                    {w.title}
+                    {t(w.titleKey)}
                   </h3>
                   <p className="body-text max-w-[44ch] text-[0.95rem] opacity-0 transition-all duration-500 group-hover:opacity-100 md:translate-y-2 md:group-hover:translate-y-0">
                     {w.desc}
@@ -112,7 +115,7 @@ export default function Worlds() {
                   <span
                     className={`mt-3 inline-flex w-fit items-center gap-2 border-b pb-1 font-sans text-[0.8rem] uppercase tracking-[0.2em] transition-all duration-300 group-hover:gap-3.5 ${w.accentText} ${w.accentLine}`}
                   >
-                    走进去 <ArrowRight size={14} strokeWidth={1.75} />
+                    {t('ui.enter')} <ArrowRight size={14} strokeWidth={1.75} />
                   </span>
                 </div>
 

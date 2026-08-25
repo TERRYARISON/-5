@@ -21,6 +21,9 @@ export default function CameraJourney() {
   const captionARef = useRef<HTMLDivElement>(null);
   const captionBRef = useRef<HTMLDivElement>(null);
   const frameAVideoRef = useRef<HTMLVideoElement>(null);
+  // F-008 镜头旅程滚动提示：进度条 + “继续滚动”
+  const hintRef = useRef<HTMLDivElement>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const v = frameAVideoRef.current;
@@ -48,6 +51,15 @@ export default function CameraJourney() {
             scrub: 0.8,
             pin: true,
             anticipatePin: 1,
+            onUpdate: (self) => {
+              if (progressRef.current) {
+                progressRef.current.style.transform = `scaleX(${self.progress})`;
+              }
+              if (hintRef.current) {
+                // 快走完时淡出提示
+                hintRef.current.style.opacity = self.progress > 0.9 ? '0' : '1';
+              }
+            },
           },
         });
 
@@ -176,6 +188,21 @@ export default function CameraJourney() {
           <p className="mt-4 font-serif text-[2rem] font-light leading-snug text-fog">
             Every trace of light is <em className="italic text-sakura">intentional</em>.
           </p>
+        </div>
+
+        {/* F-008 旅程进度提示 —— 告诉访客：继续滚动，镜头还没走完 */}
+        <div
+          ref={hintRef}
+          className="pointer-events-none absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3 transition-opacity duration-500"
+        >
+          <span className="eyebrow text-ghost">继续滚动 · Keep Scrolling</span>
+          <span className="block h-px w-28 overflow-hidden bg-fog/15">
+            <span
+              ref={progressRef}
+              className="block h-full w-full origin-left bg-sakura"
+              style={{ transform: 'scaleX(0)' }}
+            />
+          </span>
         </div>
       </div>
     </section>

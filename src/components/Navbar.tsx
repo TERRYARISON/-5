@@ -1,11 +1,52 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Mail } from 'lucide-react';
+import { Github, Mail, Languages } from 'lucide-react';
 import StarMark from './StarMark';
 import { NAV_LINKS, SOCIALS as SOCIAL_LINKS } from '../content/site';
+import { useLang, LANGS } from '../i18n';
+import type { DictKey } from '../i18n';
 
 const LINKS = NAV_LINKS;
+
+/** 导航路径 → 三语字典 key */
+const NAV_KEY: Record<string, DictKey> = {
+  '/work': 'nav.work',
+  '/novels': 'nav.novels',
+  '/amulet': 'nav.amulet',
+  '/app-lab': 'nav.app',
+  '/journal': 'nav.journal',
+  '/about': 'nav.about',
+  '/contact': 'nav.contact',
+};
+
+/** 三语切换小药丸：中 / EN / ไทย */
+function LangSwitcher({ className = '' }: { className?: string }) {
+  const { lang, setLang } = useLang();
+  return (
+    <div
+      className={`flex items-center gap-1 rounded-full border border-glass-border/70 bg-void/40 p-1 backdrop-blur-md ${className}`}
+      role="group" aria-label="语言 / Language / ภาษา"
+    >
+      <Languages size={13} strokeWidth={1.5} className="ml-1.5 text-ghost" aria-hidden="true" />
+      {LANGS.map((l) => (
+        <button
+          key={l.id}
+          type="button"
+          onClick={() => setLang(l.id)}
+          aria-pressed={lang === l.id}
+          className={`min-h-[32px] min-w-[36px] rounded-full px-2 font-sans text-[0.68rem] tracking-[0.08em] transition-all duration-300 ${
+            lang === l.id
+              ? 'bg-sakura/20 text-sakura shadow-[0_0_14px_rgba(240,166,192,0.25)]'
+              : 'text-ghost hover:text-fog'
+          }`}
+        >
+          {l.short}
+        </button>
+      ))}
+    </div>
+  );
+}
 
 /** 真实社交链接（PRD F-006）——地址在 src/content/site.ts 里改 */
 const SOCIALS = [
@@ -21,6 +62,7 @@ const SOCIALS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { t } = useLang();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -62,9 +104,10 @@ export default function Navbar() {
                   `nav-link eyebrow text-ghost transition-colors duration-300 hover:text-fog ${isActive ? 'nav-active' : ''}`
                 }
               >
-                {link.label}
+                {t(NAV_KEY[link.to] ?? 'nav.home')}
               </NavLink>
             ))}
+            <LangSwitcher className="ml-2" />
           </nav>
 
           <button
@@ -96,7 +139,7 @@ export default function Navbar() {
             className="fixed inset-0 z-40 flex flex-col justify-between bg-[rgba(7,7,13,0.82)] px-8 pb-12 pt-32 backdrop-blur-[24px] md:hidden"
           >
             <nav className="flex flex-col gap-7" aria-label="Mobile">
-              {[{ to: '/', label: 'Home' }, ...LINKS].map((link, i) => (
+              {[{ to: '/' as const }, ...LINKS].map((link, i) => (
                 <motion.div
                   key={link.to}
                   initial={{ opacity: 0, y: 32 }}
@@ -110,7 +153,7 @@ export default function Navbar() {
                       `font-serif text-[2.6rem] font-light leading-none ${isActive ? 'italic text-sakura' : 'text-fog'}`
                     }
                   >
-                    {link.label}
+                    {t(NAV_KEY[link.to] ?? 'nav.home')}
                   </NavLink>
                 </motion.div>
               ))}
@@ -121,6 +164,8 @@ export default function Navbar() {
               transition={{ delay: 0.5, duration: 0.5 }}
               className="flex items-center gap-4"
             >
+              <LangSwitcher />
+              <span className="h-6 w-px bg-glass-border" aria-hidden="true" />
               {SOCIALS.map((s) => (
                 <a
                   key={s.label}

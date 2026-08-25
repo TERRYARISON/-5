@@ -2,8 +2,15 @@ import { Link } from 'react-router-dom';
 import { Github, Mail } from 'lucide-react';
 import StarMark from './StarMark';
 import { NAV_LINKS, SOCIALS as SOCIAL_LINKS } from '../content/site';
+import { useLang } from '../i18n';
+import type { DictKey } from '../i18n';
 
 const LINKS = NAV_LINKS;
+
+const NAV_KEY: Record<string, DictKey> = {
+  '/work': 'nav.work', '/novels': 'nav.novels', '/amulet': 'nav.amulet',
+  '/app-lab': 'nav.app', '/journal': 'nav.journal', '/about': 'nav.about', '/contact': 'nav.contact',
+};
 
 /** 真实社交链接（PRD F-006） */
 const SOCIALS = [
@@ -13,6 +20,7 @@ const SOCIALS = [
 
 /** Shared footer (design.md §6): three columns over `abyss`, "ZC" watermark. */
 export default function Footer() {
+  const { t } = useLang();
   return (
     <footer className="relative z-10 overflow-hidden border-t border-glass-border bg-abyss">
       <span
@@ -36,20 +44,20 @@ export default function Footer() {
         </div>
 
         <nav className="flex flex-col gap-4" aria-label="Footer">
-          <p className="eyebrow text-ghost">Navigate</p>
+          <p className="eyebrow text-ghost">{t('footer.navigate')}</p>
           {LINKS.map((link) => (
             <Link
               key={link.to}
               to={link.to}
               className="w-fit font-sans text-sm font-light text-mist transition-colors duration-300 hover:text-sakura"
             >
-              {link.label}
+              {t(NAV_KEY[link.to] ?? 'nav.home')}
             </Link>
           ))}
         </nav>
 
         <div className="flex flex-col gap-4">
-          <p className="eyebrow text-ghost">Connect</p>
+          <p className="eyebrow text-ghost">{t('footer.connect')}</p>
           <div className="flex items-center gap-4">
             {SOCIALS.map((s) => (
               <a

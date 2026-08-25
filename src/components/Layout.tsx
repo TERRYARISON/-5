@@ -7,6 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import PetalField from './PetalField';
+import CompassNav from './CompassNav';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,6 +61,7 @@ export default function Layout() {
         <Outlet />
       </motion.main>
       <Footer />
+      <CompassNav />
     </div>
   );
 }
